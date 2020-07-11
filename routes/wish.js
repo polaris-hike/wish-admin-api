@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const WishController = require('../controller/wish');
+const WishController = require('../controllers/wish');
 router.get('/', WishController.list);
 router.get('/:id', WishController.info);
 router.post('/', WishController.add);
