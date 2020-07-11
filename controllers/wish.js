@@ -58,6 +58,7 @@ function list(req, res) {
   Common.autoFn(tasks, res, resObj)
 }
 
+// 根据 id 返回对应许愿信息
 function info(req, res) {
   const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
   let tasks = {
@@ -88,14 +89,82 @@ function info(req, res) {
   Common.autoFn(tasks, res, resObj)
 }
 
-function add() {
-
+// 添加许愿
+function add(req, res) {
+  const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+  let tasks = {
+    checkParams: (cb) => {
+      Common.checkParams(req.body, ['name', 'content'], cb);
+    },
+    add: ['checkParams', (results, cb) => {
+      WishModel.create({
+        name: req.body.name,
+        content: req.body.content
+      }).then(function (result) {
+        cb(null)
+      }).catch(function (err) {
+        console.log(err);
+        cb(Constant.DEFAULT_ERROR)
+      })
+    }]
+  }
+  Common.autoFn(tasks, res, resObj)
 }
 
-function update() {
+//  修改许愿信息接口
+function update(req, res) {
+  const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
 
+  let tasks = {
+    checkParams: (cb) => {
+      Common.checkParams(req.body, ['id', 'name', 'content'], cb)
+    },
+    update: ['checkParams', (results, cb) => {
+      WishModel.update({
+        name: req.body.name,
+        content: req.body.content
+      }, {
+        where: {
+          id: req.body.id
+        }
+      }).then(function (result) {
+        if (result[0]) {
+          cb(null)
+        } else {
+          cb(Constant.WISH_NOT_EXSIT)
+        }
+      }).catch(function (err) {
+        console.log(err)
+        cb(Constant.DEFAULT_ERROR)
+      })
+    }]
+  }
+  Common.autoFn(tasks, res, resObj)
 }
 
-function remove() {
-
+// 删除许愿
+function remove(req, res) {
+  const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+  let tasks = {
+    checkParams: (cb) => {
+      Common.checkParams(req.body, ['id'], cb)
+    },
+    remove: cb => {
+      WishModel.destroy({
+        where: {
+          id: req.body.id
+        }
+      }).then(function (result) {
+        if (result) {
+          cb(null)
+        } else {
+          cb(Constant.WISH_NOT_EXSIT)
+        }
+      }).catch(function (err) {
+        console.log(err)
+        cb(Constant.DEFAULT_ERROR)
+      })
+    }
+  }
+  Common.autoFn(tasks, res, resObj)
 }
