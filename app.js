@@ -8,7 +8,7 @@ const verifyMiddleware = require('./routes/middleware/verify');
 
 
 var indexRouter = require('./routes/index');
-/* var wishRouter = require('./routes/wish'); */
+var wishRouter = require('./routes/wish');
 /* var adminRouter = require('./routes/admin'); */
 
 var app = express();
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-/* app.use('/wish', verifyMiddleware.verifyToken(), wishRouter); */
+app.use('/wish', wishRouter);
 /* app.use('/admin', verifyMiddleware.verifyToken(), adminRouter); */
 
 // catch 404 and forward to error handler

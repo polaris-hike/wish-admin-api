@@ -48,7 +48,6 @@ function login(req, res) {
       })
     }],
     writeLastLoginAt: ['query', (results, cb) => {
-
       let adminId = results['query'];
       AdminModel.update({
         lastLoginAt: new Date()
